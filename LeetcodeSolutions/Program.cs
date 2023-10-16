@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿using System.ComponentModel;
+using System.Net;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace LeetcodeSolutions
 {
@@ -7,7 +9,7 @@ namespace LeetcodeSolutions
     {
         static void Main(string[] args)
         {
-           
+            Console.WriteLine(ReplaceDigits("a1c1e1"));
 
         }
 
@@ -409,17 +411,246 @@ namespace LeetcodeSolutions
 
         public static bool CheckIfPangram(string sentence)
         {
-         
-
+        
             return string.Join("", sentence.Distinct()).Length == 26;
+        }
+
+        public static bool IsAcronym(IList<string> words, string s)
+        {
+            string acronym = string.Empty;
+            foreach (var item in words)
+            {
+                acronym +=item[0];
+            }
+            Console.WriteLine(acronym);
+
+            return acronym == s;
+        }
+
+        public static string ReverseWords(string s)
+        {
+            string[] words = s.Split(' ');
+            for (int i = 0; i < words.Length; i++)
+            {
+                words[i] = string.Join("",words[i].Reverse());
+            }
+            return string.Join(" ",words);
+
+           
+        }
+
+        public static int UniqueMorseRepresentations(string[] words)
+        {
+            Dictionary<char, string> morseCode = new Dictionary<char, string>(){
+{'a', ".-"}, {'b', "-..."}, {'c', "-.-."}, {'d', "-.."}, {'e', "."}, {'f', "..-."}, {'g', "--."}, {'h', "...."}, {'i', ".."}, {'j', ".---"}, {'k', "-.-"}, {'l', ".-.."}, {'m', "--"}, {'n', "-."}, {'o', "---"}, {'p', ".--."}, {'q', "--.-"}, {'r', ".-."}, {'s', "..."}, {'t', "-"}, {'u', "..-"}, {'v', "...-"}, {'w', ".--"}, {'x', "-..-"}, {'y', "-.--"}, {'z', "--.."}, };
+            List<string> decoded = new List<string>();
+            string str = string.Empty;
+            foreach (string word in words) 
+            {
+                foreach (var letter in word)
+                {
+                    str += morseCode[letter];
+                }
+                Console.WriteLine(str);
+                decoded.Add(str);
+                str = string.Empty;
+            }
+            
+            return decoded.Distinct().Count();
+        }
+
+        public static int CountConsistentStrings(string allowed, string[] words)
+        {
+            int count = 0;
+            foreach (var item in words)
+            {
+                if(string.Join("",item.Distinct().Order())== string.Join("",allowed.Order()) || string.Join("",allowed.Order()).Contains(string.Join("", item.Distinct().Order())))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        public static string FinalString(string s)
+        {
+            string newStr = string.Empty;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == 'i')
+                {
+                    newStr = new string(s.Take(i+1).Reverse().ToArray());
+                    
+                   
+                    
+                }
+                else
+                {
+                    newStr += s[i];
+                }
+            }
+
+            return newStr;
         }
 
 
 
+            public string RemoveOuterParentheses(string s)
+            {
+                Stack<char> stack = new Stack<char>();
+                StringBuilder ans = new("");
+
+                foreach (char c in s.ToCharArray())
+                {
+                    if (c is '(')
+                    {
+                        if (stack.Count > 0)
+                        {
+                            ans.Append('(');
+                        }
+
+                        stack.Push(c);
+                    }
+                    else
+                    {
+                        if (stack.Count > 1)
+                        {
+                            ans.Append(')');
+
+                        }
+
+                        stack.Pop();
+                    }
+                }
+
+                return ans.ToString();
+            }
 
 
 
+        public static int MaxDepth(string s)
+        {
+            List<char> paranthesis = new List<char>();
+            foreach (var item in s)
+            {
+                if(item is '(' || item is ')')
+                {
+                    paranthesis.Add(item);
+                }
+            }
+            int max = 0;
+            int temp = 0;
+            foreach (var item in paranthesis)
+            {
+                if(item is '(')
+                {
+                    temp++;
+                }
+
+                else
+                {
+                    if(temp>max)
+                    {
+                        max = temp;
+                    }
+                    temp--;
+                   
+                }
+            }
+
+            return max;
+        }
+
+        public static int CountAsterisks(string s)
+        {
+            var astheriks = s.Split("|*");
+            Console.WriteLine(astheriks.Length);
+            foreach (var item in astheriks)
+            {
+                Console.WriteLine(item);
+            }
+            int count = 0;
+
+            for (int i = 2; i < astheriks.Length-2; i++)
+            {
+                foreach (var item in astheriks[i])
+                {
+                    if (item is '*')
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        public static int CountPoints(string rings)
+        {
+
+           Dictionary<string,string> dict = new Dictionary<string,string>();
+            rings = string.Join("", rings.Reverse());
+            for (int i = 0; i < rings.Length; i+=2)
+            {
+                if (!dict.ContainsKey(rings[i].ToString()))
+                {
+                    dict.Add(rings[i].ToString(), rings[i+1].ToString());
 
 
+                }
+                else
+                {
+                    dict[rings[i].ToString()] += rings[i + 1];
+
+                }
+
+
+            }
+
+            foreach (var item in dict)
+            {
+                Console.WriteLine($"key: {item.Key}  value: {item.Value}");
+            }
+            int count = 0;
+            foreach(var item in dict)
+            {
+                if(string.Join("",item.Value.Order().Distinct()).Contains("BGR"))
+                {
+                    count++;
+                }
+            }   
+            return count;
+        }
+
+        public static string ReplaceDigits(string s)
+        {
+            List<char> alphabet = new List<char>();
+            List<char> newString = new List<char>();
+            for (char i = 'a'; i <= 'z'; i++)
+            {
+                alphabet.Add(i);
+            }
+            for (int i = 1; i < s.Length; i+=2)
+            {
+                var temp = s[i - 1];
+                newString.Add(temp);
+                var index = alphabet.IndexOf(temp) + int.Parse(s[i].ToString());
+                newString.Add(alphabet[index]);
+            }
+            if(s.Length%2!=0)
+            {
+                newString.Add(s[s.Length-1]);
+            }
+            return string.Join("",newString);
+        }
     }
+    
+
+
+
+   
+
+
 }
+
+
+  
