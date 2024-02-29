@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Net;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,8 +10,7 @@ namespace LeetcodeSolutions
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(ReplaceDigits("a1c1e1"));
-
+            Console.WriteLine(GetDuplicate("unhappybuddy"));
         }
 
         public static int[] CountBits(int n)
@@ -642,6 +642,122 @@ namespace LeetcodeSolutions
             }
             return string.Join("",newString);
         }
+
+        public static string MakeSmallestPalindrome(string s)
+        {
+
+
+            char leftPointer = '\0';
+            char rightPointer = '\0';
+            char[] newS = s.ToCharArray();
+
+            for (int i = 0; i < s.Length / 2; i++)
+            {
+                leftPointer = s[i];
+                rightPointer = s[s.Length - 1 - i];
+                Console.WriteLine(leftPointer);
+                Console.WriteLine(rightPointer);
+
+                if (leftPointer == rightPointer)
+                {
+                    newS[i] = leftPointer;
+                    newS[s.Length-1 - i] = rightPointer;
+                }
+                else if (leftPointer < rightPointer)
+                {
+                    newS[i] = leftPointer;
+                    newS[s.Length - 1 - i] = leftPointer;
+
+
+                }
+                else
+                {
+                    newS[i] = rightPointer;
+                    newS[s.Length - 1 - i] = rightPointer;
+                }
+            }
+            return string.Join("",newS);
+        }
+
+        public static int MaximumNumberOfStringPairs(string[] words)
+        {
+            int count = 0;
+            string temp = string.Empty;
+            for (int i = 0; i < words.Length; i++)
+            {
+                temp = string.Join("",words[i].Reverse());
+                for (int j = i+1; j < words.Length; j++)
+                {
+                    if(temp == words[j])
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        public static int NumOfStrings(string[] patterns, string word)
+        {
+            int count = 0;
+            foreach (var item in patterns)
+            {
+                if (word.Contains(item))
+                {
+                    count++;
+                }
+            }
+            return count;
+
+        }
+
+        public string[] SortPeople(string[] names, int[] heights)
+        {
+            int temp = 0;
+            int index = 0;
+            List<string> sortedNamesByHeight = new List<string>();
+            for (int i = 0; i < heights.Length; i++)
+            {
+                temp = heights.Take(i).Max();
+                index = heights.ToList().IndexOf(temp);
+                sortedNamesByHeight.Add(names[index]);
+
+            }
+
+            return sortedNamesByHeight.ToArray();
+        }
+
+        public static string ReversePrefix(string word, char ch)
+        {
+            var index = word.IndexOf(ch);
+
+            if(index != -1)
+            {
+                return word.Substring(0, index).Reverse() + word.Substring(index);
+            }
+            return word;
+        }
+
+        public static string GetDuplicate(string word)
+        {
+            string duplicatedString = string.Empty;
+            foreach (var item in word)
+            {
+                var duplicatedCountInItem = word.Count(x => x == item);
+
+                if(duplicatedCountInItem >= 2)
+                {
+                    if(duplicatedString.IndexOf(item)  == -1)
+                    {
+                        duplicatedString += item;
+                    }
+                 
+                }
+            }
+            return duplicatedString;
+        }
+
+
     }
     
 
