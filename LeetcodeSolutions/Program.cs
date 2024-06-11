@@ -10,7 +10,8 @@ namespace LeetcodeSolutions
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(GetDuplicate("unhappybuddy"));
+            Console.WriteLine($"n => {BigON(1000)}");
+            Console.WriteLine($"Logn => {BigOLogN(1000)}");
         }
 
         public static int[] CountBits(int n)
@@ -756,6 +757,57 @@ namespace LeetcodeSolutions
             }
             return duplicatedString;
         }
+
+        public static int  NFibNumber(int number)
+        {
+            int fib1 = 1;
+            int fib2 = 1;
+            int temp = 0;
+
+            if(number == 1 || number == 2)
+            {
+                return 1;
+            }
+
+            for (int i = 0; i <= number - 3 ; i++)
+            {
+                temp = fib1 + fib2;
+                Console.WriteLine(temp);
+                fib1 = fib2;
+                fib2 = temp;
+                Console.WriteLine($"fib 1 = {fib1} --- fib2 = {fib2} ");
+
+            }
+
+            return temp;
+
+
+
+        }
+
+
+        public static int BigON(int number)
+        {
+            int sum = 0;
+            for (int i = 0; i < number; i++)
+            {
+                sum += 1;
+            }
+
+            return sum;
+        }
+
+        public static int BigOLogN(int number)
+        {
+            int sum = 0;
+            for (int i = 1; i <= number; i*=2)
+            {
+                sum += 1;
+            }
+
+            return sum; 
+         }
+
 
 
     }
